@@ -17,7 +17,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import "firebase/app";
-import { firebase } from "../../../firebase";
+import { app } from "../../../firebase";
 
 export const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -31,20 +31,16 @@ export const Login = ({ navigation }) => {
         //sign in
         const user = userCredential.user;
         const usersRef = collection(db, "users");
-
-        const q = query(usersRef, where("id", "==", user.uid));
-        getDocs(q).then((response) => {
-          response.forEach((doc) => {
-            console.log(doc.id, "=>", doc.data());
-            navigation.navigate("Home", { user: doc.data() });
-          });
+        getDoc(user.uid).then((response) => {
+          console.log(response)
+          navigation.navigate("Home");
         });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMsg = error.message;
-        alert(errorMsg);
-      });
+        console.log(user);
+      }).catch((error) => {
+          const errorCode = error.code;
+          const errorMsg = error.message;
+          alert(errorMsg);
+        });
   };
 
   return (
