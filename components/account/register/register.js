@@ -10,7 +10,7 @@ import {
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 
-import "firebase/app";
+import { app } from "../../../firebase";
 
 export const Register = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -38,14 +38,14 @@ export const Register = ({ navigation }) => {
           name,
           birth,
         };
-        addDoc(collection(db, "users"), data)
+        addDoc(collection(db, "users", user.uid), data)
           .then(() => {
             navigation.navigate("Login", { user: data });
           })
           .catch((err) => alert(err));
       })
       .catch((err) => {
-        const errorCode = error.code;
+        const errorCode = err.code;
         const errorMsg = err.message;
         alert(errorMsg);
       });
