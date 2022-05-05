@@ -3,11 +3,10 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { ProfileDetail } from './ProfileDetail';
 import { OrderDetail } from './OrderDetail';
 
-export const Profile = ({ navigation }) => {
+export const Profile = () => {
   return (
     <View style={styles.container}>
       <ProfileDetail />
