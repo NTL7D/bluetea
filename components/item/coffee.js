@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { db } from "../../firebase";
-export const Bobatea = () => {
-  const [bobatea, setBobaTea] = useState([]);
+export const Coffee = () => {
+  const [coffee, setCoffee] = useState([]);
 
   useEffect(() => {
-    db.collection("bobatea")
+    db.collection("coffee")
       .get()
       .then((result) => result.docs)
       .then((docs) =>
@@ -16,38 +23,38 @@ export const Bobatea = () => {
           image: doc.data().image,
         }))
       )
-      .then((bobatea) => setBobaTea(bobatea));
+      .then((coffee) => setCoffee(coffee));
   }, []);
-
   return (
-    <View style={styles.screen}>
-      {bobatea?.map((bobatea) => (
+    <ScrollView style={styles.cfscreen}>
+      {coffee?.map((coffee) => (
         <TouchableOpacity
           style={styles.itemList}
           onPress={() => alert("Thêm món thành công!")}
         >
           <View>
             <View>
-              <Image style={styles.itemImage} source={bobatea.image} />
+              <Image style={styles.itemImage} source={coffee.image} />
             </View>
           </View>
           <View>
-            <Text style={styles.itemText}>{bobatea.name}</Text>
-            <Text style={styles.itemText}>{bobatea.price + "đ"}</Text>
+            <Text style={styles.itemText}>{coffee.name}</Text>
+            <Text style={styles.itemText}>{coffee.price + "đ"}</Text>
           </View>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  cfscreen: {
     width: "100%",
-    height: 660,
+    height: 480,
   },
 
   itemList: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 5,
