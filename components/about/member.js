@@ -1,35 +1,52 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import { db } from "../../firebase";
 
 export const Member = () => {
-  const [member, setMember] = useState([
-    {
-      name: "Tăng Cảnh Phong",
-      id: "1900009080",
-    },
-    {
-      name: "Nguyễn Thanh Long",
-      id: "1900008795",
-    },
-    {
-      name: "Nguyễn Hoàng Trung",
-      id: "1911549005",
-    },
-    {
-      name: "Hàng Nguyên Trạch",
-      id: "1911548449",
-    },
-  ]);
+  const [member, setMember] = useState([]);
+
+  useEffect(() => {
+    db.collection("member")
+      .get()
+      .then((result) => result.docs)
+      .then((docs) =>
+        docs.map((doc) => ({
+          name: doc.data().name,
+          email: doc.data().email,
+          id: doc.data().id,
+          image: doc.data().image,
+        }))
+      )
+      .then((member) => setMember(member));
+  }, []);
 
   return (
     <View style={styles.memContainer}>
       <Text style={styles.memNav}>Thông tin thành viên</Text>
-      <ScrollView style={{ height: 200 }}>
-        {member.map((item) => (
+      <ScrollView style={{ height: 300 }}>
+        {member?.map((member) => (
           <View style={styles.memInfo}>
-            <View>
-              <Text>{item.name}</Text>
-              <Text>{item.id}</Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <View>
+                <Text>{member.name}</Text>
+                <Text>MSSV: {member.id}</Text>
+                <Text>{member.email}</Text>
+              </View>
+              <Image
+                source={member.image}
+                style={{
+                  width: 70,
+                  height: 70,
+                  backgroundColor: "white",
+                  borderRadius: 5,
+                }}
+              />
             </View>
           </View>
         ))}
