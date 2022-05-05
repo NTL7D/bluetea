@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
-import { RadioButton } from 'react-native-paper';
+} from "react-native";
 
 export const Cart = () => {
   const [count, setCount] = useState(1);
@@ -23,7 +21,7 @@ export const Cart = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.nav}>Thanh toán</Text>
-      <ScrollView style={{ width: '100%', height: 100, marginLeft: 20 }}>
+      <ScrollView style={{ width: "100%", height: 100, marginLeft: 20 }}>
         <View style={styles.item}>
           <View style={styles.itemName}>
             <Text>Cà phê đá</Text>
@@ -33,20 +31,22 @@ export const Cart = () => {
           </View>
           <View style={styles.itemCount}>
             <TouchableOpacity
-              style={{ textAlign: 'center' }}
-              onPress={increase}>
+              style={{ textAlign: "center" }}
+              onPress={increase}
+            >
               +
             </TouchableOpacity>
             <Text style={{ paddingLeft: 10, paddingRight: 10 }}>{count}</Text>
             <TouchableOpacity
-              style={{ textAlign: 'center' }}
+              style={{ textAlign: "center" }}
               onPress={decrease}
-              disabled={count === 1}>
+              disabled={count === 1}
+            >
               -
             </TouchableOpacity>
           </View>
           <TouchableOpacity>
-          <Text>Xoá</Text>
+            <Text>Xoá</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -55,31 +55,38 @@ export const Cart = () => {
         <Text
           style={{
             marginTop: 5,
-            textAlign: 'right',
-            fontWeight: 'bold',
+            textAlign: "right",
+            fontWeight: "bold",
             fontSize: 14,
-            color: "#154360"
-          }}>
-          Tổng cộng:{' '}
+            color: "#154360",
+          }}
+        >
+          Tổng cộng:{" "}
         </Text>
         <Text
           style={{
-            textAlign: 'right',
+            textAlign: "right",
             marginTop: 5,
             marginRight: 5,
-            fontWeight: 'bold',
+            fontWeight: "bold",
             fontSize: 24,
-            color: "#154360"
-          }}>
+            color: "#154360",
+          }}
+        >
           {15000 * count} đồng
         </Text>
-      <View>
-        <TouchableOpacity style={styles.paymentButton}>
-          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 18 }}>
-            Thanh toán
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <View>
+          <TouchableOpacity
+            style={styles.paymentButton}
+            onPress={() => {
+              alert("Thanh toán thành công");
+            }}
+          >
+            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 18 }}>
+              Thanh toán
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -88,26 +95,26 @@ export const Cart = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 'auto',
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: "auto",
   },
 
   nav: {
-    backgroundColor: '#1F618D',
-    color: '#fff',
+    backgroundColor: "#1F618D",
+    color: "#fff",
     padding: 20,
-    width: '100%',
+    width: "100%",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   item: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#A7C7E7',
-    width: '95%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#A7C7E7",
+    width: "95%",
     marginTop: 10,
     padding: 20,
     borderRadius: 10,
@@ -118,35 +125,35 @@ const styles = StyleSheet.create({
   },
 
   itemCount: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 
   line: {
-    marginTop: 250,
-    backgroundColor: '#000',
-    width: '97%',
+    marginTop: 340,
+    backgroundColor: "#000",
+    width: "97%",
     height: 1,
   },
 
   total: {
-    backgroundColor: '#A7C7E7',
-    width: '100%',
+    backgroundColor: "#A7C7E7",
+    width: "100%",
     height: 200,
     padding: 20,
-    marginTop: 10
+    marginTop: 20,
   },
 
   paymentButton: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 10,
-    backgroundColor: '#1F618D',
-    marginTop: 20,
+    backgroundColor: "#1F618D",
+    marginTop: 50,
     borderRadius: 10,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
 });
