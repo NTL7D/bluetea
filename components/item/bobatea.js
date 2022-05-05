@@ -1,52 +1,39 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-export const Bobatea = ({ title, price, navigation }) => {
-  const [menu, setMenu] = useState([
-    {
-      name: 'Trà sữa đen',
-      price: 12000,
-      src: require("../../assets/bobatea/trasuaden.jpg"),
-    },
-    {
-      name: 'Trà sữa bạc hà',
-      price: 15000,
-      src: require("../../assets/bobatea/trasuabacha.jpg"),
-    },
-    {
-      name: 'Trà sữa dâu',
-      price: 15000,
-      src: require("../../assets/bobatea/trasuadau.jpg"),
-    },
-    {
-      name: 'Trà sữa cacao',
-      price: 20000,
-      src: require("../../assets/bobatea/trasuacacao.jpg"),
-    },
-    {
-      name: 'Trà sữa đường đen',
-      price: 20000,
-      src: require("../../assets/bobatea/trasuaduongden.jpg"),
-    }
-  ]);
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { db } from "../../firebase";
+export const Bobatea = () => {
+  const [bobatea, setBobaTea] = useState([]);
+
+  useEffect(() => {
+    db.collection("bobatea")
+      .get()
+      .then((result) => result.docs)
+      .then((docs) =>
+        docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+          price: doc.data().price,
+          image: doc.data().image,
+        }))
+      )
+      .then((bobatea) => setBobaTea(bobatea));
+  }, []);
 
   return (
     <View style={styles.screen}>
-      {menu.map((item) => (
-        <TouchableOpacity style={styles.itemList}>
+      {bobatea?.map((bobatea) => (
+        <TouchableOpacity
+          style={styles.itemList}
+          onPress={() => alert("Thêm món thành công!")}
+        >
           <View>
-            <Image style={styles.itemImage} source={item.src} />
+            <View>
+              <Image style={styles.itemImage} source={bobatea.image} />
+            </View>
           </View>
           <View>
-            <Text style={styles.itemText}>{item.name}</Text>
-            <Text style={styles.itemText}>{item.price + 'đ'}</Text>
+            <Text style={styles.itemText}>{bobatea.name}</Text>
+            <Text style={styles.itemText}>{bobatea.price + "đ"}</Text>
           </View>
         </TouchableOpacity>
       ))}
@@ -56,27 +43,28 @@ export const Bobatea = ({ title, price, navigation }) => {
 
 const styles = StyleSheet.create({
   screen: {
-    width: '100%',
-    height: 620,
+    width: "100%",
+    height: 660,
   },
 
   itemList: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     margin: 5,
     padding: 15,
     borderRadius: 5,
-    backgroundColor: '#A7C7E7',
+    backgroundColor: "#A7C7E7",
   },
 
   itemImage: {
     width: 85,
     height: 80,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
+    borderRadius: 5,
   },
 
   itemText: {
-    textAlign: 'right',
+    textAlign: "right",
     margin: 5,
   },
 });
