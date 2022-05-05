@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -6,41 +7,32 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  query,
-  where,
-  collection,
-  getDocs,
-} from "firebase/firestore";
-import "firebase/app";
-import { app } from "../../../firebase";
+import { auth } from "../../../firebase";
 
-export const Login = ({ navigation }) => {
+export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.replace("Home");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
   const handleLogin = () => {
-    const auth = getAuth();
-    const db = getFirestore(app);
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        //sign in
-        const user = userCredential.user;
-        const usersRef = collection(db, "users");
-        getDoc(user.uid).then((response) => {
-          console.log(response)
-          navigation.navigate("Home");
-        });
-        console.log(user);
-      }).catch((error) => {
-          const errorCode = error.code;
-          const errorMsg = error.message;
-          alert(errorMsg);
-        });
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Logged in with:", user.email);
+      })
+      .catch((error) => alert(error.message));
   };
 
   return (
@@ -51,13 +43,13 @@ export const Login = ({ navigation }) => {
           <TextInput
             style={styles.input}
             value={email}
-            onChangeText={(e) => setEmail(e)}
+            onChangeText={(text) => setEmail(text)}
             placeholder="Tên đăng nhập"
           ></TextInput>
           <TextInput
             style={styles.input}
             value={password}
-            onChangeText={(v) => setPassword(v)}
+            onChangeText={(text) => setPassword(text)}
             placeholder="Mật khẩu"
             secureTextEntry={true}
           ></TextInput>
