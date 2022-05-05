@@ -1,55 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Linking,
 } from "react-native";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { auth } from "../../../firebase";
 
-import { app } from "../../../firebase";
-
-export const Register = ({ navigation }) => {
+export const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [birth, setBirth] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
+  const navigate = useNavigation();
+
   const handleRegister = () => {
-    if (password !== confirm) {
-      alert("Vui lòng nhập lại mật khẩu chính xác");
-      return;
-    }
-
-    const db = getFirestore(app);
-
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-
-        const data = {
-          id: user.uid,
-          email,
-          name,
-          birth,
-        };
-        addDoc(collection(db, "users", user.uid), data)
-          .then(() => {
-            navigation.navigate("Login", { user: data });
-          })
-          .catch((err) => alert(err));
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Registered with:", user.email);
+        navigate("Login");
       })
-      .catch((err) => {
-        const errorCode = err.code;
-        const errorMsg = err.message;
-        alert(errorMsg);
-      });
+      .catch((error) => alert(error.message));
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -57,25 +35,19 @@ export const Register = ({ navigation }) => {
         <View style={{ justifyContent: "center", marginTop: 10 }}>
           <TextInput
             value={name}
-            onChangeText={(v) => setName(v)}
+            onChangeText={(text) => setName(text)}
             style={styles.input}
             placeholder="Tên người dùng"
           ></TextInput>
           <TextInput
             value={email}
-            onChangeText={(e) => setEmail(e)}
+            onChangeText={(text) => setEmail(text)}
             style={styles.input}
             placeholder="Email"
           ></TextInput>
           <TextInput
-            value={birth}
-            onChangeText={(v) => setBirth(v)}
-            style={styles.input}
-            placeholder="Năm sinh"
-          ></TextInput>
-          <TextInput
             value={password}
-            onChangeText={(v) => setPassword(v)}
+            onChangeText={(text) => setPassword(text)}
             style={styles.input}
             placeholder="Mật khẩu"
             secureTextEntry={true}
@@ -84,7 +56,7 @@ export const Register = ({ navigation }) => {
             style={styles.input}
             placeholder="Xác nhận Mật khẩu"
             value={confirm}
-            onChangeText={(v) => setConfirm(v)}
+            onChangeText={(e) => setConfirm(e)}
             secureTextEntry={true}
           ></TextInput>
           <TouchableOpacity style={styles.button}>
