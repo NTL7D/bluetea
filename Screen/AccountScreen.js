@@ -1,18 +1,18 @@
 import React from "react";
-import {View, StyleSheet} from "react-native";
-import {Account} from "../components/account/Account";
+import { View, StyleSheet } from "react-native";
+import {Profile} from "../components/account/profile/profile"
 
 export const AccountScreen = () => {
   return (
     <View style={styles.container}>
-      <Account />
+      <Profile />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 });

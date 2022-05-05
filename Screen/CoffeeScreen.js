@@ -1,18 +1,10 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { Coffee } from '../components/item/coffee';
+import React from "react";
+import { View, ScrollView } from "react-native";
+import { Coffee } from "../components/item/coffee";
 
-export const CoffeeScreen = ({ title, price, navigation }) => {
+export const CoffeeScreen = () => {
   return (
-    <ScrollView style={{width: "100%", height: 450}}>
+    <ScrollView style={{ width: "100%", height: 540 }}>
       <View>
         <Coffee />
       </View>
