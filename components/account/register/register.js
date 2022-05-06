@@ -56,7 +56,7 @@ export const Register = () => {
             style={styles.input}
             placeholder="Xác nhận Mật khẩu"
             value={confirm}
-            onChangeText={(e) => setConfirm(e)}
+            onChangeText={(text) => setConfirm(text)}
             secureTextEntry={true}
           ></TextInput>
           <TouchableOpacity style={styles.button}>
