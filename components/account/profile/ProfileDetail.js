@@ -8,19 +8,12 @@ import {
   ScrollView,
 } from "react-native";
 import { auth } from "../../../firebase";
-export const ProfileDetail = ({ navigation }) => {
-  const [order, setOrder] = useState([
-    {
-      name: "Cà phê đá",
-      price: 10000,
-    },
-  ]);
-
+export const ProfileDetail = () => {
   const handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
-        navigation.navigate("Login");
+        alert("Đăng xuất thành công! Vui lòng tải lại trang để tiếp tục.");
       })
       .catch((error) => alert(error.message));
   };
