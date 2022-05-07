@@ -15,7 +15,7 @@ export const Register = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
-  const navigate = useNavigation();
+  const navigation = useNavigation();
 
   const handleRegister = () => {
     auth
@@ -23,7 +23,7 @@ export const Register = () => {
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log("Registered with:", user.email);
-        navigate("Login");
+        navigation.navigate("Login");
       })
       .catch((error) => alert(error.message));
   };
